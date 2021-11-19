@@ -111,6 +111,7 @@ console.log("country info >>>" , countryInfo);
         <h3>Live cases by country</h3>
         <Table countries={tableData} />
         <h3>Worldwide new cases</h3>
+        <LineGraph />
       </CardContent>
     </Card>
 
