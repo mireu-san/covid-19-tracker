@@ -1,111 +1,108 @@
-import React, { useState, useEffect } from "react"
-import { Line } from "react-chartjs-2";
-import numeral from "numeral";
+import React, { useState, useEffect } from 'react';
+import { Line } from 'react-chartjs-2';
+import numeral from 'numeral';
 
-// caution //
 const options = {
     legend: {
-        display: false,
+      display: false,
     },
     elements: {
-        point: {
-            radius: 0,
-        },
+      point: {
+        radius: 0,
+      },
     },
     maintainAspectRatio: false,
     tooltips: {
-        mode: "index",
-        intersect: false,
-        callbacks: {
-            label: function(tooltipItem, data) {
-                return numeral(tooltipItem.value).format("+0,0");
-            },
+      mode: "index",
+      intersect: false,
+      callbacks: {
+        label: function (tooltipItem, data) {
+          return numeral(tooltipItem.value).format("+0,0");
         },
+      },
     },
     scales: {
-        xAxes: [
-            {
-                type: "time",
-                time: {
-                    format: "MM/DD/YY",
-                    tooltipFormat: "ll",
-                },
+      xAxes: [
+        {
+          type: "time",
+          time: {
+            format: "MM/DD/YY",
+            tooltipFormat: "ll",
+          },
+        },
+      ],
+      yAxes: [
+        {
+          gridLines: {
+            display: false,
+          },
+          ticks: {
+            // Include a dollar sign in the ticks
+            callback: function (value, index, values) {
+              return numeral(value).format("0a");
             },
-        ],
-        yAxes: [
-            {
-                gridLines: {
-                    display: false,
-                },
-                ticks: {
-                    callback: function(value, index, values) {
-                        return numeral(value).format("0a");
-                    },
-                },
-            },
-        ],
+          },
+        },
+      ],
     },
-};
-// caution end //
+  };
 
-const buildChartData = (data, casesType) => {
+
+
+  const buildChartData = (data, casesType) => {
     let chartData = [];
     let lastDataPoint;
-    // data.cases.forEach(date => 
-    for(let date in data.cases) {
+    for (let date in data.cases) {
       if (lastDataPoint) {
         let newDataPoint = {
           x: date,
           y: data[casesType][date] - lastDataPoint,
         };
-          chartData.push(newDataPoint);
-        }
-        lastDataPoint = data[casesType][date];
+        chartData.push(newDataPoint);
       }
-      return chartData;
-};
+      lastDataPoint = data[casesType][date];
+    }
+    return chartData;
+  };
 
-
-function LineGraph({ casesType }) { // purpose: if get source does not pass default cases...
-    const [data, setData] = useState({});
-    
+    function LineGraph({ casesType = 'cases'}) {
+        const [data, setData] = useState({});
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetch("https://disease.sh/v3/covid-19/historical/all?lastdays=120")
-                .then(response => {
+            await fetch('https://disease.sh/v3/covid-19/historical/all?lastdays=120')
+                .then((response) => {
                     return response.json();
-                })
-                .then(data => {
-                    let chartData = buildChartData(data, "cases");
-                    setData(chartData);
-                    console.log(chartData);
-            })        
-        };
-        fetchData(casesType);
-    }, []);
+            })
+        .then((data) => {
+            let chartData = buildChartData(data, casesType);
+            setData(chartData);
+            console.log(chartData);
+        });
+    };
+
+    fetchData();
+}, [casesType]);
+
 
     return (
-        // graph displays here
         <div>
-            <h1>LineGraph is now displayed</h1>
-            {data?.length > 0 && ( // data? check even data exists e.g. instead of using data && data.lendth 
+            {data?.length > 0 && (
                 <Line 
-                    options={options}
                     data={{
                         datasets: [
-                            {
-                                backgroundColor: "rgba(204, 16, 52, 0.5)",
-                                borderColor: "#CC1034",
-                                data: data,
-                            },
-                        ],
-                    }}
-                    options={options}
-                />
-            )}
+                        {
+                            backgroundColor: 'rgba(204, 16, 52, 0.5)',
+                            borderColor: '#CC1034',
+                            data: data,
+                        },
+                    ],
+                }}
+                options={options}
+            />
+        )}
         </div>
     );
 }
 
-export default LineGraph
+export default LineGraph;
