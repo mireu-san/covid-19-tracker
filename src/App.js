@@ -7,11 +7,17 @@ import Table from './Table';
 import { sortData } from './util';
 import LineGraph from "./LineGraph";
 
+import "leaflet/dist/leaflet.css";
+
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState('worldwide');
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
+  
+  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+  const [mapZoom, setMapZoom] = useState(3);
+
 
   // to display the data as soon as accessing the page
   useEffect(() => {
@@ -107,7 +113,10 @@ console.log("country info >>>" , countryInfo);
           total={countryInfo.deaths} />
     </div>
 
-      <Map />
+      <Map
+        center={mapCenter}
+        zoom={mapZoom}
+      />
     </div>
 
     <Card className="app__right">
