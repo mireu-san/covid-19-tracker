@@ -117,6 +117,7 @@ console.log("country info >>>" , countryInfo);
     </div>
 
       <Map
+        countries={mapCountries}
         center={mapCenter}
         zoom={mapZoom}
       />
