@@ -15,9 +15,11 @@ function App() {
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
   
+
+
   const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
   const [mapZoom, setMapZoom] = useState(3);
-
+  const [mapCountries, setMapCountries] = useState([]);
 
   // to display the data as soon as accessing the page
   useEffect(() => {
@@ -41,10 +43,12 @@ function App() {
             const countries = data.map((country) => ({
                 name: country.country,
                 value: country.countryInfo.iso2,
+
             }));
 
             const sortedData = sortData(data);
             setTableData(sortedData);
+            setMapCountries(data);
             setCountries(countries);
 
           });
@@ -57,7 +61,6 @@ function App() {
 const onCountryChange = async (event) => {
   const countryCode = event.target.value;
   // console.log('test >>>', countryCode);
-  setCountry(countryCode);
 
   const url = 
     countryCode === "worldwide"
@@ -65,14 +68,14 @@ const onCountryChange = async (event) => {
   : `https://disease.sh/v3/covid-19/countries/${countryCode}` // /v3/covid-19/countries/{country}/ -> get 'countryCode' specifically from it
 
   await fetch(url)
-  .then(response => response.json())
-  .then(data => {
+  .then((response) => response.json())
+  .then((data) => {
     setCountry(countryCode);
     setCountryInfo(data);
-  })
 
-  // https://disease.sh/v3/covid-19/all
-  // https://disease.sh/v3/covid-19/countries/[COUNTRY_CODE]
+    setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+    setMapZoom(4);
+  })
 };
 
 console.log("country info >>>" , countryInfo);
