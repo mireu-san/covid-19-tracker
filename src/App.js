@@ -108,11 +108,11 @@ console.log("country info >>>" , countryInfo);
           total={countryInfo.cases} />
         <InfoBox 
           title="Recovered" 
-          cases={countryInfo.todayRecovered}
+          cases={prettyPrintStat(countryInfo.todayRecovered)}
           total={countryInfo.recovered} />
         <InfoBox 
           title="Deaths" 
-          cases={countryInfo.todayDeaths}
+          cases={prettyPrintStat(countryInfo.todayDeaths)}
           total={countryInfo.deaths} />
     </div>
 
