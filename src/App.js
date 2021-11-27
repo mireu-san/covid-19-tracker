@@ -112,12 +112,12 @@ console.log("country info >>>" , countryInfo);
           total={countryInfo.recovered} />
         <InfoBox 
           title="Deaths" 
-          cases={countryInfo.todayDeaths} 
+          cases={countryInfo.todayDeaths}
           total={countryInfo.deaths} />
     </div>
 
       <Map
-        countries={mapCountries}
+        countries={mapCountries}  
         center={mapCenter}
         zoom={mapZoom}
       />
