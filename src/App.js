@@ -4,7 +4,7 @@ import { MenuItem, FormControl, Select, Card, CardContent, } from '@mui/material
 import InfoBox from './InfoBox';
 import Map from './Map';
 import Table from './Table';
-import { sortData } from './util';
+import { sortData, prettyPrintStat } from './util';
 import LineGraph from "./LineGraph";
 
 import "leaflet/dist/leaflet.css";
@@ -104,7 +104,7 @@ console.log("country info >>>" , countryInfo);
       <div className="app__stats">
         <InfoBox 
           title="Coronavirus Cases" 
-          cases={countryInfo.todayCases} 
+          cases={prettyPrintStat(countryInfo.todayCases)} 
           total={countryInfo.cases} />
         <InfoBox 
           title="Recovered" 

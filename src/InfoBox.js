@@ -1,5 +1,6 @@
-import { Typography, Card, CardContent } from "@mui/material";
 import React from "react";
+import '././InfoBox.css';
+import { Typography, Card, CardContent } from "@mui/material";
 
 function InfoBox({ title, cases, total, active, isRed, ...props }) {
   return (
